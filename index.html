@@ -5,21 +5,138 @@
     <title>Title</title>
 
     <script src="./js/vue.js"></script>
+
+    <style>
+        .c1{
+            background: red;
+        }
+    </style>
 </head>
 <body>
 
     <div id="app">
-        {{ name }}
+
+        <div class="class1" style="height: 300px;width: 500px;border: 1px solid #000000">
+            <span>{{ name }}</span><br>
+            <span v-text="name + '123123' "></span><br>
+            <span v-html="name"></span><br>
+            <span v-text="message"></span><br>
+            <span v-bind:title="name" v-on:click="detail">123</span><br>
+            <span @click="detail">456</span><br>
+            <span>说清楚</span>
+        </div>
+
+        <div class="class2" style="height: 300px;width: 500px;border: 1px solid #000000">
+            <div>修改颜色</div>
+            <input type="checkbox" v-model="use" v-on:click="show">
+            <br><br>
+            <div v-bind:class="{'c1':use}">
+                v-bind:class指令
+            </div>
+        </div>
+
+        <div class="class3" style="height: 300px;width: 500px;border: 1px solid #000000">
+            <div v-on:mouseout="changeBack" style="height: 50px;width: 400px;border: 1px solid #000000;">
+                <p v-if="screen" v-on:mouseover="change">你现在能看到我了</p>
+            </div>
+
+            <a v-bind:href="url">{{message}}</a>
+            <br>
+            <input v-model="message">
+
+            <p>{{name}}</p>
+            <button v-on:click="splits">点击对上述进行反转</button>
+
+            <p>{{url|showNum}}</p>
+
+        </div>
+
+
+        <div class="class4" style="height: 300px;width: 500px;border: 1px solid #000000;">
+
+            <div v-if="isTrue == true">
+                go~~~go~~~~~go~~~~
+            </div>
+            <div v-else="isTrue">
+                back~~~~~~back~~~~~~back~~~~~~~
+            </div>
+
+            <button @click="goback">change</button>
+
+            循环语句
+            <div v-for="fordata in fordatas">
+                {{fordata.name}}
+            </div>
+
+            <button @click="changeArray">changeArray</button>
+        </div>
+
+
+
+
+
+
     </div>
 
 
     <script>
+
+        var new_data = {
+            name : "hello vue!",
+            message : "sorry",
+            use:false,
+            screen:true,
+            url:"//www.baidu.com",
+            isTrue:true,
+            fordatas:[{name:"jack"},{name:"linda"},{name:"lucy"},{name:"Tom"},{name:"jela"}],
+        };
+
         var vm = new Vue({
             el : '#app',
-            data:{
-                name : "hello vue!"
+            data:new_data,
+            methods:{
+                detail:function(){
+                    alert("hello world!");
+                },
+                show:function (){
+                    console.log(vm.$data.use);
+                },
+                change:function (){
+                    console.log(332211);
+                    vm.$data.screen = false;
+                },
+                changeBack:function (){
+                    console.log(112233);
+                    vm.$data.screen = true;
+                },
+                splits:function (){
+                    console.log(this.name);
+                    this.name = this.name.split('').reverse().join('');
+                },
+                goback:function () {
+                  this.isTrue = !this.isTrue;
+                },
+                changeArray:function () {
+                    this.fordatas[3].name = 'Lilan';
+                },
+            },
+            filters:{
+                showNum:function (value) {
+                    console.log(value);
+                    return value
+                }
             },
         });
+
+        setTimeout(function (){
+
+            vm.name = '吃葡萄';
+
+            new_data.message = "you are welcome~";
+
+        },1000)
+
+
     </script>
 </body>
 </html>
